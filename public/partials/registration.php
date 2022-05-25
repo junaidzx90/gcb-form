@@ -40,20 +40,20 @@ global $gcbRegAlerts;
       <div class="form-wrapper">
         <form id="gcb__registration_form" method="post" enctype="multipart/form-data">
           <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-            <input type="email" name="gcb_reg_email" placeholder="Email" value="<?php echo ((isset($_POST['gcb_reg_email'])) ? $_POST['gcb_reg_email'] : '') ?>" />
+            <input type="email" required oninvalid="setCustomValidity('You must have to add your email.')" oninput="setCustomValidity('')" name="gcb_reg_email" placeholder="Email" value="<?php echo ((isset($_POST['gcb_reg_email'])) ? $_POST['gcb_reg_email'] : '') ?>" />
           </div>
           <div class="input_field"> <span><i class="fas fa-id-badge"></i></span>
-            <input type="number" name="gcb_reg_pubgmid" placeholder="Pubgm ID" value="<?php echo ((isset($_POST['gcb_reg_pubgmid'])) ? $_POST['gcb_reg_pubgmid'] : '') ?>" />
+            <input type="number" required name="gcb_reg_pubgmid" placeholder="Pubgm ID" value="<?php echo ((isset($_POST['gcb_reg_pubgmid'])) ? $_POST['gcb_reg_pubgmid'] : '') ?>" />
           </div>
           <div class="row clearfix">
             <div class="col_half">
               <div class="input_field"> <span><i class="fas fa-user-tag"></i></span>
-                <input type="text" name="gcb_reg_clan_tag" placeholder="Clan tag" value="<?php echo ((isset($_POST['gcb_reg_clan_tag'])) ? $_POST['gcb_reg_clan_tag'] : '') ?>" />
+                <input type="text" required oninvalid="setCustomValidity('You must have to add your clan tag.')" oninput="setCustomValidity('')" name="gcb_reg_clan_tag" placeholder="Clan tag" value="<?php echo ((isset($_POST['gcb_reg_clan_tag'])) ? $_POST['gcb_reg_clan_tag'] : '') ?>" />
               </div>
             </div>
             <div class="col_half">
               <div class="input_field"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
-                <input type="text" name="gcb_reg_name" placeholder="In game name" value="<?php echo ((isset($_POST['gcb_reg_name'])) ? $_POST['gcb_reg_name'] : '') ?>" />
+                <input type="text" required oninvalid="setCustomValidity('You must have to add your name.')" oninput="setCustomValidity('')" name="gcb_reg_name" placeholder="In game name" value="<?php echo ((isset($_POST['gcb_reg_name'])) ? $_POST['gcb_reg_name'] : '') ?>" />
               </div>
             </div>
           </div>
@@ -63,7 +63,10 @@ global $gcbRegAlerts;
               'post_type' => 'sp_team',
               'name' => 'gcb_reg_team',
               'values' => 'ID',
-              'show_option_none' => 'Select a team'
+              'option_none_value' => '',
+              'selected' => ((isset($_POST['gcb_reg_team'])) ? $_POST['gcb_reg_team'] : ''),
+              'show_option_none' => 'Select a team',
+              'property'  => 'required oninvalid="setCustomValidity(\'You must have to add your pubgmid.\')" oninput="setCustomValidity(\'\')"'
             );
             sp_dropdown_pages( $args );
             ?>

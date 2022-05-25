@@ -188,21 +188,37 @@ class Gcb_Form_Public {
 		if(isset($_POST['gcb_registration']) && wp_verify_nonce( $_POST['gcb_reg_nonce'], 'gcb_nonce' )){
 			try {
 				$email = sanitize_email( $_POST['gcb_reg_email'] );
-				if(!$email){
+				if(empty($email) || $email === null){
+					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to add your email.';
 					return;
 				}
 
-				$username = explode("@", $email)[0];
 				$pubgmid = intval( $_POST['gcb_reg_pubgmid'] );
-				$clan_tag = sanitize_text_field( $_POST['gcb_reg_clan_tag'] );
-				$game_name = sanitize_text_field( $_POST['gcb_reg_name'] );
-				$reg_team = intval( $_POST['gcb_reg_team'] );
-				$profile_image = $_FILES['gcb_reg_profile_image'];
+				if(empty($pubgmid)){
+					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to add your pubgmid.';
+					return;
+				}
 
-				if ( isset( $reg_team ) && $reg_team == '-1' ) {
+				$clan_tag = sanitize_text_field( $_POST['gcb_reg_clan_tag'] );
+				if(empty($clan_tag)){
+					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to add your clan tag.';
+					return;
+				}
+
+				$game_name = sanitize_text_field( $_POST['gcb_reg_name'] );
+				if(empty($game_name)){
+					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to add your name.';
+					return;
+				}
+
+				$reg_team = intval( $_POST['gcb_reg_team'] );
+				if ( $reg_team === '' ) {
 					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to select a team.';
 					return;
 				}
+
+				$profile_image = $_FILES['gcb_reg_profile_image'];
+
 
 				// Pubgmid unique
 				if(!empty($pubgmid)){
@@ -213,7 +229,7 @@ class Gcb_Form_Public {
 					}
 				}
 
-				$user_id = wp_create_user( $username, rand(), $email );
+				$user_id = wp_create_user( $game_name, rand(), $email );
 				if(is_wp_error( $user_id )){
 					$code = $user_id->get_error_code();
 					$gcbRegAlerts = $user_id->get_error_messages($code)[0];
@@ -237,7 +253,7 @@ class Gcb_Form_Public {
 				}
 
 				$post['post_type'] = 'sp_player';
-				$post['post_title'] = trim( $username );
+				$post['post_title'] = trim( $game_name );
 				$post['post_author'] = $user_id;
 				$post['post_status'] = 'draft';
 				$playe_id = wp_insert_post( $post );
@@ -264,7 +280,8 @@ class Gcb_Form_Public {
 					return;
 				}
 
-				wp_new_user_notification( $user_id );
+				wp_new_user_notification( $user_id, null, 'both' );
+				
 				set_transient( 'user_created_success', 'Your account has been created successfully.', 30 );
 				wp_safe_redirect( get_the_permalink( get_page_url_by_shortcode('gcb_registration') ) );
 				exit;
