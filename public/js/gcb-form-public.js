@@ -47,22 +47,6 @@ jQuery(function ($) {
     }
   });
 
-  // Form validation
-  // $("#gcb__registration_form").on("submit", function(e){
-  //     $(this).find("input[type='text'], input[type='number'], input[type='email'], select").each(function () {
-  //         if($(this).val().length === 0 || $(this).val() === '-1'){
-  //             e.preventDefault();
-  //             $(this).css("border-color", "red");
-  //         }
-
-  //         $(this).on("keyup, change", function(){
-  //             if($(this).val().length > 0 || $(this).val() !== '-1'){
-  //                 $(this).css("border-color", "#00d4c6");
-  //             }
-  //         })
-  //     });
-  // });
-
   $('input[name="gcb_reg_pubgmid"]').on('keyup', function () {
     if ($(this).val().length < 7 || $(this).val().length > 15) {
       this.setCustomValidity(

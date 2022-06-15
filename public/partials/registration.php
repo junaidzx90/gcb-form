@@ -57,6 +57,24 @@ global $gcbRegAlerts;
               </div>
             </div>
           </div>
+
+          <div class="input_field select_option"> <span><i class="fas fa-map-marker-alt"></i></span>
+            <select required oninvalid="setCustomValidity('Please select your region.')" oninput="setCustomValidity('')" name="gcb_region">
+              <option value="">Region</option>
+              <?php
+              $terms = get_terms( array(
+                  'taxonomy' => 'sp_region',
+                  'hide_empty' => false,
+              ) );
+              if($terms){
+                foreach($terms as $term){
+                  echo '<option value="'.$term->term_id.'">'.$term->name.'</option>';
+                }
+              }
+              ?>
+            </select>
+          </div>
+          
           <div class="input_field select_option"> <span><i class="fas fa-users"></i></span>
             <?php
             $args = array(

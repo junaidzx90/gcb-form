@@ -70,7 +70,7 @@ class Gcb_Form {
 		if ( defined( 'GCB_FORM_VERSION' ) ) {
 			$this->version = GCB_FORM_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.0.1';
 		}
 		$this->plugin_name = 'gcb-form';
 
