@@ -67,8 +67,9 @@ global $gcbRegAlerts;
                   'hide_empty' => false,
               ) );
               if($terms){
+                $selectedterm = ((isset($_POST['gcb_region'])) ? $_POST['gcb_region'] : '');
                 foreach($terms as $term){
-                  echo '<option value="'.$term->term_id.'">'.$term->name.'</option>';
+                  echo '<option '.((intval($selectedterm) === $term->term_id) ? 'selected': '').' value="'.$term->term_id.'">'.$term->name.'</option>';
                 }
               }
               ?>

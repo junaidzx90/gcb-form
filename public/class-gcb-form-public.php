@@ -211,6 +211,12 @@ class Gcb_Form_Public {
 					return;
 				}
 
+				$gcb_region = $_POST['gcb_region'];
+				if ( $gcb_region === '' ) {
+					$gcbRegAlerts = '<strong>ERROR</strong>: Please select your region.';
+					return;
+				}
+
 				$reg_team = intval( $_POST['gcb_reg_team'] );
 				if ( $reg_team === '' ) {
 					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to select a team.';
@@ -256,27 +262,28 @@ class Gcb_Form_Public {
 				$post['post_title'] = trim( $game_name );
 				$post['post_author'] = $user_id;
 				$post['post_status'] = 'draft';
-				$playe_id = wp_insert_post( $post );
+				$player_id = wp_insert_post( $post );
+				wp_set_object_terms( $player_id, intval( $gcb_region ), 'sp_region', true ); 
 
-				if(!is_wp_error( $playe_id )){
+				if(!is_wp_error( $player_id )){
 					$imageUrl = $this->upload_profile_image($profile_image);
-					$imageId = $this->gcb_set_post_thumbnail($imageUrl, $playe_id);
+					$imageId = $this->gcb_set_post_thumbnail($imageUrl, $player_id);
 					update_user_meta( $user_id, 'player_profile_photo', $imageId );
 
 					// Custom fields ids
 					$metrics = [];
 					$metrics['pubgmid'] = $pubgmid;
-					update_post_meta( $playe_id, 'sp_metrics', $metrics );
+					update_post_meta( $player_id, 'sp_metrics', $metrics );
 					update_user_meta( $user_id, 'pubgmid', $pubgmid );
 					
 					if ( ! empty( $reg_team ) ) {
 						if ( $reg_team <= 0 ) $reg_team = 0;
-						update_post_meta( $playe_id, 'sp_current_team', $reg_team );
+						update_post_meta( $player_id, 'sp_current_team', $reg_team );
 					}
 					
 				}else{
-					$code = $playe_id->get_error_code();
-					$gcbRegAlerts = $playe_id->get_error_messages($code)[0];
+					$code = $player_id->get_error_code();
+					$gcbRegAlerts = $player_id->get_error_messages($code)[0];
 					return;
 				}
 
