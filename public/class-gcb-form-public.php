@@ -217,6 +217,12 @@ class Gcb_Form_Public {
 					return;
 				}
 
+				$gcb_position = $_POST['gcb_position'];
+				if ( $gcb_position === '' ) {
+					$gcbRegAlerts = '<strong>ERROR</strong>: Please select your region.';
+					return;
+				}
+
 				$reg_team = intval( $_POST['gcb_reg_team'] );
 				if ( $reg_team === '' ) {
 					$gcbRegAlerts = '<strong>ERROR</strong>: You must have to select a team.';
@@ -264,6 +270,7 @@ class Gcb_Form_Public {
 				$post['post_status'] = 'draft';
 				$player_id = wp_insert_post( $post );
 				wp_set_object_terms( $player_id, intval( $gcb_region ), 'sp_region', true ); 
+				wp_set_object_terms( $player_id, intval( $gcb_position ), 'sp_position', false ); 
 
 				if(!is_wp_error( $player_id )){
 					$imageUrl = $this->upload_profile_image($profile_image);

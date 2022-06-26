@@ -75,6 +75,24 @@ global $gcbRegAlerts;
               ?>
             </select>
           </div>
+
+          <div class="input_field select_option"> <span><i class="fas fa-anchor"></i></span>
+            <select required oninvalid="setCustomValidity('Please select your position.')" oninput="setCustomValidity('')" name="gcb_position">
+              <option value="">Position</option>
+              <?php
+              $terms2 = get_terms( array(
+                  'taxonomy' => 'sp_position',
+                  'hide_empty' => false,
+              ) );
+              if($terms2){
+                $selectedterm2 = ((isset($_POST['gcb_position'])) ? $_POST['gcb_position'] : '');
+                foreach($terms2 as $term2){
+                  echo '<option '.((intval($selectedterm2) === $term2->term_id) ? 'selected': '').' value="'.$term2->term_id.'">'.$term2->name.'</option>';
+                }
+              }
+              ?>
+            </select>
+          </div>
           
           <div class="input_field select_option"> <span><i class="fas fa-users"></i></span>
             <?php
